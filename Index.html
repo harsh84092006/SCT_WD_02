@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculator</title>
+  <style>
+    body {
+      background: #f2f2f2;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .calculator {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 300px;
+    }
+
+    #display {
+      width: 100%;
+      font-size: 2em;
+      padding: 15px;
+      text-align: right;
+      border: none;
+      background: #f0f0f0;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 20px;
+      font-size: 1.2em;
+      background-color: #e0e0e0;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #ccc;
+    }
+
+    .operator {
+      background-color: #ff9500;
+      color: white;
+    }
+
+    .equal {
+      grid-column: span 4;
+      background-color: #34c759;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" placeholder="0" readonly />
+    <div class="buttons">
+      <button class="btn" data-value="7">7</button>
+      <button class="btn" data-value="8">8</button>
+      <button class="btn" data-value="9">9</button>
+      <button class="btn operator" data-value="/">÷</button>
+
+      <button class="btn" data-value="4">4</button>
+      <button class="btn" data-value="5">5</button>
+      <button class="btn" data-value="6">6</button>
+      <button class="btn operator" data-value="*">×</button>
+
+      <button class="btn" data-value="1">1</button>
+      <button class="btn" data-value="2">2</button>
+      <button class="btn" data-value="3">3</button>
+      <button class="btn operator" data-value="-">−</button>
+
+      <button class="btn" data-value="0">0</button>
+      <button class="btn" data-value=".">.</button>
+      <button class="btn" id="clear">C</button>
+      <button class="btn operator" data-value="+">+</button>
+
+      <button class="btn equal" id="equal">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+    const buttons = document.querySelectorAll(".btn");
+    const equal = document.getElementById("equal");
+    const clear = document.getElementById("clear");
+
+    let currentInput = "";
+
+    function updateDisplay(value) {
+      display.value = value;
+    }
+
+    // Handle button clicks
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const value = button.getAttribute("data-value");
+
+        if (button.id === "clear") {
+          currentInput = "";
+          updateDisplay("");
+        } else if (button.id === "equal") {
+          calculateResult();
+        } else {
+          currentInput += value;
+          updateDisplay(currentInput);
+        }
+      });
+    });
+
+    // Handle keyboard input
+    document.addEventListener("keydown", (e) => {
+      if (
+        (e.key >= "0" && e.key <= "9") ||
+        ["+", "-", "*", "/", "."].includes(e.key)
+      ) {
+        currentInput += e.key;
+        updateDisplay(currentInput);
+      } else if (e.key === "Enter") {
+        calculateResult();
+      } else if (e.key === "Backspace") {
+        currentInput = currentInput.slice(0, -1);
+        updateDisplay(currentInput);
+      } else if (e.key === "Escape") {
+        currentInput = "";
+        updateDisplay("");
+      }
+    });
+
+    // Evaluate and handle errors
+    function calculateResult() {
+      try {
+        if (currentInput === "") return;
+        const result = eval(currentInput);
+        currentInput = result.toString();
+        updateDisplay(currentInput);
+      } catch (error) {
+        updateDisplay("Error");
+        currentInput = "";
+      }
+    }
+  </script>
+</body>
+</html>
