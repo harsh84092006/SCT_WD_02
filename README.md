@@ -1,0 +1,1 @@
+A calculator in web development is a user-friendly online tool that enables individuals to carry out basic math operations—such as addition, subtraction, multiplication, and division—right within their web browser. It offers an interactive interface for performing quick calculations without needing any external software.
